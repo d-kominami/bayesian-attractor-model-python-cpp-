@@ -51,8 +51,9 @@ g++ -O3 -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` bam-module.cpp
   BAM = bam_module.bam(3, 3, 2, 1)
   ```
   - Then, call methods of bam-module.cpp
-    - BAM.set_k_dim: The number of attractors can be changed
-    - BAM.set_f_dim: Changes the number of dimensions of a feature
+    - BAM.set_k_dim: Set the number of attractors
+    - BAM.set_f_dim: Set the number of dimensions of a feature
+    - BAM.set_norm_prm: Set the parameters for data normalization
     - BAM.set_q: Reset the dynamics uncertainty of BAM
     - BAM.set_r: Reset the sensory uncertainty of BAM
     - BAM.upd_f: Features are set to attractors
@@ -64,9 +65,19 @@ g++ -O3 -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` bam-module.cpp
 
 # Example
 ```
-python Yuragi_sample.py sample_feature.txt sample_input.txt
+python Yuragi_sample.py sample_feature.txt sample_input.txt sample_norm.txt
 ```
 It generates res.csv that contains confidence level of how similar the input series is to the features listed in each line of the sample_feature.txt.
+
+The input series is 3-dimensional data X = (x_1, x_2, x_3) where x_i = (1+r_1, 1+r_2, -1+r_3) and r_1, r_2, r_3 ~ N(0,1). The three attractors store (1, -1, -1), (-1, 1, 1), and (1, 1, -1) respectively.
+
+
+![input](https://user-images.githubusercontent.com/47323363/216042813-db2da32d-a19f-41d8-88d2-5c100e3704d8.png)
+
+Yuragi learning outputs a confidence level indicating how close the input series is to the information stored in 3 attractors.
+
+![confidence](https://user-images.githubusercontent.com/47323363/216042928-62f7fc80-eb42-4ebd-b4c4-4870f2e05bde.png)
+
 
 
 # Author
