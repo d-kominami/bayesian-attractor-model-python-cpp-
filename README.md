@@ -69,14 +69,13 @@ python Yuragi_sample.py sample_feature.txt sample_input.txt sample_norm.txt
 ```
 It generates res.csv that contains confidence level of how similar the input series is to the features listed in each line of the sample_feature.txt.
 
-The input series is 3-dimensional data X = (x_1, x_2, x_3) where x_i = (1+r_1, 1+r_2, -1+r_3) and r_1, r_2, r_3 ~ N(0,1). The three attractors store (1, -1, -1), (-1, 1, 1), and (1, 1, -1) respectively.
+The input series is 3-dimensional data X = (x_1, x_2, x_3) where x_i = (1+r_1, 1+r_2, -1+r_3) and r_1, r_2, r_3 ~ N(0,1). The three attractors store (1, -1, -1), (-1, 1, 1), and (1, 1, -1) respectively. In time step 1--125, (x_1, x_2, x_3) = (1, 1, -1) and after that (x_1, x_2, x_3) = (-1, 1, 1).
 
-
-![input](https://user-images.githubusercontent.com/47323363/216042813-db2da32d-a19f-41d8-88d2-5c100e3704d8.png)
+![fig_input](https://user-images.githubusercontent.com/47323363/216059213-b15dc4c2-1c50-43f5-899c-5c22d0dc02aa.png)
 
 Yuragi learning outputs a confidence level indicating how close the input series is to the information stored in 3 attractors.
 
-![confidence](https://user-images.githubusercontent.com/47323363/216042928-62f7fc80-eb42-4ebd-b4c4-4870f2e05bde.png)
+![fig_conf](https://user-images.githubusercontent.com/47323363/216059204-7c22a371-1fb9-455a-9180-300e12ffa886.png)
 
 # Tips
 - Normalization
