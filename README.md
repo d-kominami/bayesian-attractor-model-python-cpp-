@@ -68,7 +68,7 @@ g++ -O3 -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` bam-module.cpp
     - BAM.get_c: Outputs the confidence values in the Bayesian attractor model
     - BAM.msg_on: Turns on/off display of debug messages
 
-# Example
+# Yuragi example
 ```
 python Yuragi_sample.py sample_feature.txt sample_input.txt sample_norm.txt
 ```
