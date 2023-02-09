@@ -29,7 +29,7 @@ Our program assumed that Eigen is placed in the same directory. see global.h.
 pip install pybind11
 ```
 
-# Usage
+# Compile
 
 (Environments under Ubuntu 20.04 is tested)
 
