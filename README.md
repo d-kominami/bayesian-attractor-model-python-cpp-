@@ -18,6 +18,8 @@ bayesian-attractor-model-python-cpp- used [Eigen](https://eigen.tuxfamily.org/in
 
 [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) is "a C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms." To install it, please see: https://eigen.tuxfamily.org/dox/GettingStarted.html
 
+## note
+Our program assumed that Eigen is placed in the same directory. see global.h.
 
 [pybind11](https://github.com/pybind/pybind11) is "a lightweight header-only library that exposes C++ types in Python and vice versa, mainly to create Python bindings of existing C++ code." To install it, 
 ```pip
