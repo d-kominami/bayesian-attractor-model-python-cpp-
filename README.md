@@ -83,7 +83,7 @@ Yuragi learning outputs a confidence level indicating how close the input series
 ![fig_conf](https://user-images.githubusercontent.com/47323363/216059204-7c22a371-1fb9-455a-9180-300e12ffa886.png)
 
 # Tips
-- Normalization
+## Normalization
 Yuragi learning can improve accuracy by normalizing the input series. The set_norm_prm() function is prepared for this purpose. In the file of the third argument, the mean value is written on the first line for each dimension of the features, separated by tab characters, and the standard deviation is written on the second line for each dimension of the features, separated by tab characters. Normalization (subtracting the mean and dividing by the standard deviation) is automatically performed when storing the features to attractors and providing input series.
 
 # Author
