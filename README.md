@@ -86,6 +86,12 @@ Yuragi learning outputs a confidence level indicating how close the input series
 ## Normalization
 Yuragi learning can improve accuracy by normalizing the input series. The set_norm_prm() function is prepared for this purpose. In the file of the third argument, the mean value is written on the first line for each dimension of the features, separated by tab characters, and the standard deviation is written on the second line for each dimension of the features, separated by tab characters. Normalization (subtracting the mean and dividing by the standard deviation) is automatically performed when storing the features to attractors and providing input series.
 
+## Bayesian filter
+I implemented this Yuragi Learning program using UKF as a Bayesian filter. I have also implemented a version using a particle filter. It allows for more flexible recognition of observed values, but the computation time increases linearly with the increase in the number of particles.
+
+## Multimodal Recognition in the Brain
+I have also created an extended program that can perform multimodal recognition, as the human brain does. It will be published after the paper is published.
+
 # Author
 
 * Daichi Kominami
