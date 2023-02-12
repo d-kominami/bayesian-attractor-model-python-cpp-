@@ -51,7 +51,7 @@ int UKF(MatrixXd observed_data){
     obs_y            = observed_data;
 
     for (int j = 0; j < NUM_METRICS; j++) {
-      //obs_y(j,0) = (obs_y(j,0) - normalized_m(j,0))/normalized_s(j,0);
+      obs_y(j,0) = (obs_y(j,0) - normalized_m(j,0))/normalized_s(j,0);
     }
   
     //
@@ -221,8 +221,7 @@ void upd_feature(MatrixXd d) {
   }
   for (int i = 0; i < NUM_STATE; i++) {
     for (int j = 0; j < NUM_METRICS; j++) {
-      //feature_vector(j,i) = (d(i,j) - normalized_m(j,0))/normalized_s(j,0);
-      feature_vector(j,i) = d(i,j);
+      feature_vector(j,i) = (d(i,j) - normalized_m(j,0))/normalized_s(j,0);
       if(DEBUG_MSG_ON==1){ cout << "M("<<j<<","<<i<<") is "<<d(i,j)<<endl; } 
     }
   }
