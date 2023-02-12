@@ -6,20 +6,7 @@ namespace py = pybind11;
 #include "global.h"
 
 int main(int argc, char *argv[]){
-    // デバッグテスト
-    init_z(); 
-    set_d_uncertain(2.5); 
-    set_s_uncertain(1);
-    MatrixXd d = MatrixXd::Zero(2, NUM_METRICS);
-    d(0,0) = -0.0717825;d(0,1) = -0.000971141;d(0,2) = -0.0842486;d(0,3) = -0.0611397;d(0,4) = -0.00317062;d(0,5) = -8.76921e-06;
-    d(1,0) = 0.0618914; d(1,1) = 0.00090347;  d(1,2) = 0.0461513; d(1,3) = 0.0755132; d(1,4) = 0.00317902; d(1,5) = 1.56021e-05;
-    upd_feature(d);
-    MatrixXd input_data = MatrixXd::Zero(NUM_METRICS, 1);
-    input_data(0,0) = -0.963028; input_data(1,0) = 0.00557608; input_data(2,0) = -0.988645;
-    input_data(3,0) = -0.949212; input_data(4,0) = 0.013037;   input_data(5,0) = -0.00115129;
-    cout << system_average << endl;
-    UKF(input_data);
-    cout << system_average << endl;
+    // use for debug
     return 0;
 }
 
@@ -50,10 +37,6 @@ int UKF(MatrixXd observed_data){
     measure_noise    = system_noise_v;
     obs_y            = observed_data;
 
-    for (int j = 0; j < NUM_METRICS; j++) {
-      obs_y(j,0) = (obs_y(j,0) - normalized_m(j,0))/normalized_s(j,0);
-    }
-  
     //
     // calculate sigma point from the state one step before
     // 
@@ -241,7 +224,6 @@ void set_norm_param(MatrixXd M, MatrixXd S){
 bam::bam(int k_dim, int f_dim, double q, double r){ 
   DEBUG_MSG_ON = 0;
   init_z(); 
-  //init_attractor();
   change_k_dim(k_dim);
   change_f_dim(f_dim);
   init_nrm_variables();
@@ -255,7 +237,9 @@ MatrixXd bam::get_c(void){ return confidence; }
 
 void bam::ukf_z(MatrixXd d){ 
     MatrixXd input = MatrixXd::Zero(NUM_METRICS,1); 
-    for(int i=0; i<NUM_METRICS; i++){ input(i,0)=d(0,i); } 
+    
+    for(int i=0; i<NUM_METRICS; i++){ input(i,0)=(d(0,i)-normalized_m(i,0))/normalized_s(i,0); } 
+    
     if(DEBUG_MSG_ON==1){ 
         cout << "input: ";
         for(int i=0; i<NUM_METRICS-1; i++){
