@@ -206,9 +206,9 @@ void upd_feature(MatrixXd d) {
                 //exit(0);
             }
             else{
-                feature_vector(j,i) = (d(i,j) - normalized_m(j,0))/normalized_s(j,0);
+                feature_vector(j,i) = (d(i,j)-normalized_m(j,0))/normalized_s(j,0);
             }
-            if(DEBUG_MSG_ON==1){ cout << "M("<<j<<","<<i<<") is "<<feature_vector(i,j)<<endl; } 
+            if(DEBUG_MSG_ON==1){ cout << "M(" << j << "," << i << ") is " << feature_vector(i,j) << endl; } 
         }
     }
 }
@@ -220,7 +220,7 @@ void debug_msg(int i){
 void set_norm_param(MatrixXd M, MatrixXd S){
     for (int j = 0; j < NUM_METRICS; j++) {
         normalized_m(j,0) = M(j,0);
-        normalized_s(j,0)  = S(j,0);
+        normalized_s(j,0) = S(j,0);
     }
 }
 
@@ -250,9 +250,7 @@ void bam::ukf_z(MatrixXd d){
     }
     if(DEBUG_MSG_ON==1){ 
         cout << "input: ";
-        for(int i=0; i<NUM_METRICS-1; i++){
-            cout << input(i,0) << ", "; 
-        }
+        for(int i=0; i<NUM_METRICS-1; i++){ cout << input(i,0) << ", "; }
         cout << input(NUM_METRICS-1,0) << endl;
     }
     UKF(input); 
@@ -263,7 +261,7 @@ void bam::set_k_dim(int k_dim){ change_k_dim(k_dim); }
 void bam::set_q(double q)     { set_d_uncertain(q);  }
 void bam::set_r(double r)     { set_d_uncertain(r);  }
 void bam::upd_f(MatrixXd M)   { upd_feature(M);      }
-void bam::msg_on(void)        { debug_msg(1);        }
+void bam::msg_on(void)        { if(DEBUG_MSG_ON==0) debug_msg(1); else debug_msg(0); }
 
 void bam::set_norm_prm(MatrixXd M, MatrixXd S){ set_norm_param(M,S); is_normalize_param_set = true; }
 
