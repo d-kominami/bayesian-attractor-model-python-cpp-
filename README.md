@@ -1,7 +1,7 @@
 # bayesian-attractor-model-python-cpp-
 
 "bayesian-attractor-model-python-cpp-" is a program implementing core functions of Yuragi learning [1] with Python.
-To speed up the program, this core function is written in C++. And I made a simple interface program written in Python using pybind11. 
+To speed up the program, I wrote this core function in C++ and I made a simple interface program written in Python using pybind11. 
 
 
 Book [1] says
