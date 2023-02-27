@@ -13,21 +13,19 @@ Yuragi, which is the Japanese term describing the noise or fluctuations
 bayesian-attractor-model-python-cpp- used [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) and [pybind11](https://github.com/pybind/pybind11).
 
 ## Eigen
-
-[Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) is "a C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms." To install it, please see: https://eigen.tuxfamily.org/dox/GettingStarted.html
-
-### note
-Our program assumed that Eigen is placed in the same directory. see global.h.
+[Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page) is "a C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms." To install it, run:
+```
+git clone https://gitlab.com/libeigen/eigen.git
+```
+and copy the Eigen directory into the same directory where bam-module.cpp is placed.
 
 ## pybind11
-
 [pybind11](https://github.com/pybind/pybind11) is "a lightweight header-only library that exposes C++ types in Python and vice versa, mainly to create Python bindings of existing C++ code." To install it, run:
 ```pip
 pip install pybind11
 ```
 
 # Compile
-
 (Environments under Ubuntu 20.04 is tested)
 
 To compile bam-module.cpp and create a library file (bam-module.so), run:
@@ -54,17 +52,17 @@ g++ -O3 -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` bam-module.cpp
   BAM = bam_module.bam(3, 3, 2, 1)
   ```
   - Then, call methods of bam-module.cpp
-    - BAM.set_k_dim sets the number of attractors.
-    - BAM.set_f_dim sets the number of dimensions of a feature.
-    - BAM.set_norm_prm sets the parameters for data normalization.
-    - BAM.set_q sets the dynamics uncertainty of BAM.
-    - BAM.set_r sets the sensory uncertainty of BAM.
-    - BAM.upd_f sets features to attractors.
-    - BAM.ukf_z inputs observations into the Bayesian attractor model and calculates the decision variables.
-    - BAM.get_z outputs the decision variables in the Bayesian attractor model.
-    - BAM.get_p outputs the variance-covariance matrix of the current decision variables.
-    - BAM.get_c outputs the confidence values in the Bayesian attractor model.
-    - BAM.msg_on turns on/off display of debug messages.
+    - **BAM.set_k_dim** sets the number of attractors.
+    - **BAM.set_f_dim** sets the number of dimensions of a feature.
+    - **BAM.set_norm_prm** sets the parameters for data normalization.
+    - **BAM.set_q** sets the dynamics uncertainty of BAM.
+    - **BAM.set_r** sets the sensory uncertainty of BAM.
+    - **BAM.upd_f** sets features to attractors.
+    - **BAM.ukf_z** inputs observations into the Bayesian attractor model and calculates the decision variables.
+    - **BAM.get_z** outputs the decision variables in the Bayesian attractor model.
+    - **BAM.get_p** outputs the variance-covariance matrix of the current decision variables.
+    - **BAM.get_c** outputs the confidence values in the Bayesian attractor model.
+    - **BAM.msg_on** turns on/off display of debug messages.
 
 # Yuragi example
 To run the Yuragi_sample.py, type the following command:
