@@ -24,8 +24,8 @@ int UKF(MatrixXd observed_data){
     MatrixXd est_cov    = MatrixXd::Zero(NUM_STATE,   NUM_STATE);
     MatrixXd sys_x_prev = MatrixXd::Zero(NUM_STATE,   1);
     MatrixXd cov_x_prev = MatrixXd::Zero(NUM_STATE,   NUM_STATE);
-    MatrixXd process_noise(NUM_STATE,   NUM_STATE);     // if variables are independent of each other, matrix is symmetric
-    MatrixXd measure_noise(NUM_METRICS, NUM_METRICS); // 
+    MatrixXd process_noise(NUM_STATE,   NUM_STATE);   // if variables are independent of each other, matrix is symmetric
+    MatrixXd measure_noise(NUM_METRICS, NUM_METRICS);
     MatrixXd kalman_gain  (NUM_STATE,   NUM_STATE);
 
     //
@@ -110,19 +110,19 @@ int UKF(MatrixXd observed_data){
     // posterior probability
     //
     for (int i = 0; i < NUM_STATE; i++) {
-        confidence(i, 0) = prob_mnorm(attractor_vector.col(i), sys_x, cov_x); // 配列に保存するように要修正
+        confidence(i, 0) = prob_mnorm(attractor_vector.col(i), sys_x, cov_x);
     }
     return 1;
 
 }
 
 MatrixXd generative_model(MatrixXd d) {
-  MatrixXd ones_nn = MatrixXd::Ones(NUM_STATE, NUM_STATE);
-  MatrixXd ones_n  = MatrixXd::Ones(NUM_STATE, 1);
-  MatrixXd unit    = MatrixXd::Identity(NUM_STATE, NUM_STATE);
-  MatrixXd z       = d;
-  MatrixXd L       = B_LAT*(unit - ones_nn);
-  return z + DELTA_T * K_CONST * (L*sigmoid(z) + B_LIN*(G_CONST*ones_n - z));
+    MatrixXd ones_nn = MatrixXd::Ones(NUM_STATE, NUM_STATE);
+    MatrixXd ones_n  = MatrixXd::Ones(NUM_STATE, 1);
+    MatrixXd unit    = MatrixXd::Identity(NUM_STATE, NUM_STATE);
+    MatrixXd z       = d;
+    MatrixXd L       = B_LAT*(unit - ones_nn);
+    return z + DELTA_T * K_CONST * (L*sigmoid(z) + B_LIN*(G_CONST*ones_n - z));
 }
 
 MatrixXd sigmoid(MatrixXd m){
@@ -165,49 +165,52 @@ void change_k_dim(int k_dim){
 
 
 void init_attractor(void){
-  for (int i = 0; i < NUM_STATE; i++) {
-    for (int j = 0; j < NUM_STATE; j++) {
-      if (i == j) { attractor_vector(i, j) = G_CONST;  }
-      else        { attractor_vector(i, j) = -G_CONST; }
+    for (int i = 0; i < NUM_STATE; i++) {
+        for (int j = 0; j < NUM_STATE; j++) {
+            if (i == j) { attractor_vector(i, j) = G_CONST;  }
+            else        { attractor_vector(i, j) = -G_CONST; }
+        }
     }
-  }
 }
 
 void init_nrm_variables(void){
-  normalized_m       = MatrixXd::Zero(NUM_METRICS, 1);
-  normalized_s       = MatrixXd::Zero(NUM_METRICS, 1);
-  is_normalize_param_set = false;
+    normalized_m       = MatrixXd::Zero(NUM_METRICS, 1);
+    normalized_s       = MatrixXd::Zero(NUM_METRICS, 1);
+    is_normalize_param_set = false;
 }
 
 void set_d_uncertain(double d){
-  for (int i = 0; i < NUM_STATE; i++) {
-    for (int j = 0; j < NUM_STATE; j++) {
-      if (i == j) { system_noise_w(i, j)   = d; }
-      else        { system_noise_w(i, j)   = 0; }
+    for (int i = 0; i < NUM_STATE; i++) {
+        for (int j = 0; j < NUM_STATE; j++) {
+            if (i == j) { system_noise_w(i, j)   = d; }
+            else        { system_noise_w(i, j)   = 0; }
+        }
     }
-  }
 }
 
 void set_s_uncertain(double s){
-  for (int i = 0; i < NUM_METRICS; i++) {
-    for (int j = 0; j < NUM_METRICS; j++) {
-      if (i == j) { system_noise_v(i, j)   = s; }
-      else        { system_noise_v(i, j)   = 0; }
+    for (int i = 0; i < NUM_METRICS; i++) {
+        for (int j = 0; j < NUM_METRICS; j++) {
+            if (i == j) { system_noise_v(i, j)   = s; }
+            else        { system_noise_v(i, j)   = 0; }
+        }
     }
-  }
 }
 
 void upd_feature(MatrixXd d) {
-  if(!is_normalize_param_set){
-    cerr << "normalized param is not set" << endl;
-    exit(0);
-  }
-  for (int i = 0; i < NUM_STATE; i++) {
-    for (int j = 0; j < NUM_METRICS; j++) {
-      feature_vector(j,i) = (d(i,j) - normalized_m(j,0))/normalized_s(j,0);
-      if(DEBUG_MSG_ON==1){ cout << "M("<<j<<","<<i<<") is "<<d(i,j)<<endl; } 
+    if(!is_normalize_param_set){
+        cerr << "normalized param is not set" << endl;
+        feature_vector(j,i) = d(i,j);
+        //exit(0);
     }
-  }
+    else{
+        for (int i = 0; i < NUM_STATE; i++) {
+            for (int j = 0; j < NUM_METRICS; j++) {
+                feature_vector(j,i) = (d(i,j) - normalized_m(j,0))/normalized_s(j,0);
+                if(DEBUG_MSG_ON==1){ cout << "M("<<j<<","<<i<<") is "<<d(i,j)<<endl; } 
+            }
+        }
+    }
 }
 
 void debug_msg(int i){
@@ -215,49 +218,55 @@ void debug_msg(int i){
 }
 
 void set_norm_param(MatrixXd M, MatrixXd S){
-  for (int j = 0; j < NUM_METRICS; j++) {
-    normalized_m(j,0) = M(j,0);
-    normalized_s(j,0)  = S(j,0);
-  }
+    for (int j = 0; j < NUM_METRICS; j++) {
+        normalized_m(j,0) = M(j,0);
+        normalized_s(j,0)  = S(j,0);
+    }
 }
 
 bam::bam(int k_dim, int f_dim, double q, double r){ 
-  DEBUG_MSG_ON = 0;
-  init_z(); 
-  change_k_dim(k_dim);
-  change_f_dim(f_dim);
-  init_nrm_variables();
-  set_d_uncertain(q*q); 
-  set_s_uncertain(r*r); 
+    DEBUG_MSG_ON = 0;
+    init_z(); 
+    change_k_dim(k_dim);
+    change_f_dim(f_dim);
+    init_nrm_variables();
+    set_d_uncertain(q*q); 
+    set_s_uncertain(r*r); 
 }
 
-MatrixXd bam::get_z(void){ return system_average; }
+MatrixXd bam::get_z(void){ return system_average;    }
 MatrixXd bam::get_p(void){ return system_covariance; }
-MatrixXd bam::get_c(void){ return confidence; }
+MatrixXd bam::get_c(void){ return confidence;        }
 
 void bam::ukf_z(MatrixXd d){ 
     MatrixXd input = MatrixXd::Zero(NUM_METRICS,1); 
-    
-    for(int i=0; i<NUM_METRICS; i++){ input(i,0)=(d(0,i)-normalized_m(i,0))/normalized_s(i,0); } 
-    
-    if(DEBUG_MSG_ON==1){ 
-        cout << "input: ";
-        for(int i=0; i<NUM_METRICS-1; i++){
-            cout << input(i,0) << ", "; 
+    if(!is_normalize_param_set){
+        cerr << "normalized param is not set" << endl;
+        input(i,0) = d(0,i);
+        //exit(0);
+    }
+    else{
+        for(int i=0; i<NUM_METRICS; i++){ input(i,0)=(d(0,i)-normalized_m(i,0))/normalized_s(i,0); } 
+        
+        if(DEBUG_MSG_ON==1){ 
+            cout << "input: ";
+            for(int i=0; i<NUM_METRICS-1; i++){
+                cout << input(i,0) << ", "; 
+            }
+            cout << input(NUM_METRICS-1,0) << endl;
         }
-        cout << input(NUM_METRICS-1,0) << endl;
     }
     UKF(input); 
 }
 
 void bam::set_f_dim(int f_dim){ change_f_dim(f_dim); }
 void bam::set_k_dim(int k_dim){ change_k_dim(k_dim); }
-void bam::set_q(double q)     { set_d_uncertain(q); }
-void bam::set_r(double r)     { set_d_uncertain(r); }
-void bam::upd_f(MatrixXd M)   { upd_feature(M); }
-void bam::msg_on(void)        { debug_msg(1);}
+void bam::set_q(double q)     { set_d_uncertain(q);  }
+void bam::set_r(double r)     { set_d_uncertain(r);  }
+void bam::upd_f(MatrixXd M)   { upd_feature(M);      }
+void bam::msg_on(void)        { debug_msg(1);        }
 
-void bam::set_norm_prm(MatrixXd M, MatrixXd S){ set_norm_param(M,S); is_normalize_param_set = true;}
+void bam::set_norm_prm(MatrixXd M, MatrixXd S){ set_norm_param(M,S); is_normalize_param_set = true; }
 
 PYBIND11_MODULE(bam_module, m) {
     py::class_<bam>(m, "bam")
