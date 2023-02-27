@@ -72,7 +72,6 @@ python Yuragi_sample.py sample_feature.txt sample_input.txt sample_norm.txt
 ```
 This command will generate a file called "res.csv" that contains the confidence level of how similar the input series is to the features listed in each line of the "sample_feature.txt" file.
 
-
 The input series are 3-dimensional data X = (x_1, x_2, x_3) where x_i = (1+r_1, 1+r_2, -1+r_3) and r_1, r_2, r_3 ~ Uniform(-1,1). The three attractors store (1, -1, -1), (-1, 1, 1), and (1, 1, -1) respectively. In time step 1--125, (x_1, x_2, x_3) = (1, 1, -1) and after that (x_1, x_2, x_3) = (-1, 1, 1).
 
 ![fig_input](https://user-images.githubusercontent.com/47323363/216059213-b15dc4c2-1c50-43f5-899c-5c22d0dc02aa.png)
@@ -94,7 +93,6 @@ An extended version of the program that can perform multimodal recognition, as t
 # Author
 
 * Daichi Kominami
-* Assistant Professor of Osaka University
 
 # License
 
