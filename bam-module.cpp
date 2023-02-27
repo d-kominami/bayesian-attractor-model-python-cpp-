@@ -198,17 +198,17 @@ void set_s_uncertain(double s){
 }
 
 void upd_feature(MatrixXd d) {
-    if(!is_normalize_param_set){
-        cerr << "normalized param is not set" << endl;
-        feature_vector(j,i) = d(i,j);
-        //exit(0);
-    }
-    else{
-        for (int i = 0; i < NUM_STATE; i++) {
-            for (int j = 0; j < NUM_METRICS; j++) {
-                feature_vector(j,i) = (d(i,j) - normalized_m(j,0))/normalized_s(j,0);
-                if(DEBUG_MSG_ON==1){ cout << "M("<<j<<","<<i<<") is "<<d(i,j)<<endl; } 
+    for (int i = 0; i < NUM_STATE; i++) {
+        for (int j = 0; j < NUM_METRICS; j++) {
+            if(!is_normalize_param_set){
+                cerr << "normalized param is not set" << endl;
+                feature_vector(j,i) = d(i,j);
+                //exit(0);
             }
+            else{
+                feature_vector(j,i) = (d(i,j) - normalized_m(j,0))/normalized_s(j,0);
+            }
+            if(DEBUG_MSG_ON==1){ cout << "M("<<j<<","<<i<<") is "<<feature_vector(i,j)<<endl; } 
         }
     }
 }
@@ -242,19 +242,18 @@ void bam::ukf_z(MatrixXd d){
     MatrixXd input = MatrixXd::Zero(NUM_METRICS,1); 
     if(!is_normalize_param_set){
         cerr << "normalized param is not set" << endl;
-        input(i,0) = d(0,i);
+        for(int i=0; i<NUM_METRICS; i++){ input(i,0) = d(0,i); } 
         //exit(0);
     }
     else{
         for(int i=0; i<NUM_METRICS; i++){ input(i,0)=(d(0,i)-normalized_m(i,0))/normalized_s(i,0); } 
-        
-        if(DEBUG_MSG_ON==1){ 
-            cout << "input: ";
-            for(int i=0; i<NUM_METRICS-1; i++){
-                cout << input(i,0) << ", "; 
-            }
-            cout << input(NUM_METRICS-1,0) << endl;
+    }
+    if(DEBUG_MSG_ON==1){ 
+        cout << "input: ";
+        for(int i=0; i<NUM_METRICS-1; i++){
+            cout << input(i,0) << ", "; 
         }
+        cout << input(NUM_METRICS-1,0) << endl;
     }
     UKF(input); 
 }
