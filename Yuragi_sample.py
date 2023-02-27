@@ -5,7 +5,7 @@ import sys
 if __name__ == '__main__':
 
     # create an instance of Bayesian attractor model
-    # arguments
+    # 4 arguments are:
     ### number of attractors
     ### number of dimension of a input feature 
     ### dynamics uncertainty
@@ -15,6 +15,10 @@ if __name__ == '__main__':
     # python3 Yuragi_sample.py sample_feature.txt sample_input.txt
     #
     BAM = bam_module.bam(3, 3, 2, 1)
+    # Note: this version does not support multiple instance creation.
+    # if you try to create another instance, 
+    ### (BAM2 = bam_module.bam(3, 12, 1, 2))
+    # Variables BAM and BAM2 refer to the same memory space. 
 
     feature = np.loadtxt(sys.argv[1])
     input   = np.loadtxt(sys.argv[2])
